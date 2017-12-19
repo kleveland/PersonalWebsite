@@ -1,10 +1,40 @@
-h1 {
-    color: blue;
-    background-color: bisque;
+body {
+    margin: 0;
 }
 
-.test {
-    background-color: aqua;
-    width: 100px;
-    height: 50px;
+.mainpanel {
+    position: relative;
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+.mainpanel.ver1 {
+    background-color: #d28240;
+}
+
+.mainpanel.ver2 {
+    background-color: #dcd7d4;
+}
+
+.mainpanel.ver3 {
+    background-color: #e5ccaf;
+}
+
+.mainpanel.ver4 {
+    background-color: #eeeeee;
+}
+
+.mainpanel.ver5 {
+    background-color: #4a5f75;
+}
+
+.centerDiv {
+    background-color: azure;
+    width:300px;
+    height:200px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin:-100px 0 0 -150px;
 }

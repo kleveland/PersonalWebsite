@@ -4,4 +4,6 @@ html
     title= title
     link(rel="stylesheet", href="/static/css/main.css")
   body
-    h1= message
+    each val in [1,2,3,4,5]
+        div(class='mainpanel ver' + val)
+            div(class='centerDiv')= message
