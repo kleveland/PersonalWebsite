@@ -1,6 +1,15 @@
 const express = require('express')
+const path = require('path')
 const app = express()
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.use('/static', express.static(path.join(__dirname, 'public')))
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+
+console.log(path.join(__dirname, 'public'));
+
+app.get('/', (req, res) => {
+    res.render('home', { title: "Title Message", message: "Hello there"});
+})
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
