@@ -3,7 +3,17 @@ html
   head
     title= title
     link(rel="stylesheet", href="/static/css/main.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Oswald|Raleway|Roboto")
   body
-    each val in [1,2,3,4,5]
-        div(class='mainpanel ver' + val)
-            div(class='centerDiv')= message
+    div(class='navbar')
+        ul
+            each val in nav
+                li=val
+    each val,index in nav
+        div(class='mainpanel ver' + index)
+            div(class='centerDiv')
+                if(index==0)
+                    div(class='header')
+                        h1 Kacey Cleveland
+                        p Sub
+
