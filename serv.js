@@ -9,7 +9,7 @@ app.set('view engine', 'pug');
 console.log(path.join(__dirname, 'public'));
 
 app.get('/', (req, res) => {
-    res.render('home', { title: "Title Message", nav: ["Home", "About Me", "Skills and CV", "Projects"]});
+    res.render('home', { title: "Title Message", nav: ["Home", "About Me", "Skills and CV", "Projects"], navLink: ['home', 'about', 'cv', 'projects']});
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
