@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	$('#fullpage').fullpage({
-		anchors:['home', 'about', 'cv', 'projects'],
+		anchors: ['home', 'about', 'cv', 'projects'],
         afterLoad: function(anchorLink, index) {
             $('.navbar > ul > li').css('opacity', 1);
             $('.navbar > ul > li').css('color', invertColor($('#fullpage .section:nth-child(' + index + ') .mainpanel').css('backgroundColor')));

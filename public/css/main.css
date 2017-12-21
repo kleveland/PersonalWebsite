@@ -1,18 +1,23 @@
 body {
     margin: 0;
-    background-image:    url(/static/images/bg.jpeg);
-    background-size:     cover;
-    background-repeat:   no-repeat;
+    background-image: url(/static/images/bg.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
 }
 
 .navbar {
-    position:fixed;
-    left: 0;
+    position: fixed;
+    /*left: 0;*/
     z-index: 1;
-    position:absolute;
-    top:40%;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+    -moz-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
 }
 
 .navbar > ul {
@@ -30,11 +35,11 @@ body {
     font-size: 1.3em;
     width: auto;
     font-weight: bold;
-    color: 	#eeeeee;
+    color: #eeeeee;
     -webkit-transition: all .4s ease-in-out, opacity 1s ease-in-out;
     transition: all .4s ease-in-out, opacity 1s ease-in-out;
     opacity: 0;
-    margin-top: 1em;
+    margin-top: 0.8em;
 }
 
 .navbar a {
@@ -43,8 +48,8 @@ body {
 }
 
 .navbar > ul > li:hover {
-      -webkit-transform: scale(1.4);
-          transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+    transform: scale(1.4);
 }
 
 .mainpanel {
@@ -72,15 +77,9 @@ body {
     height: auto;
 }
 
-.header {
-    position: relative;
-    display: table;
-    height: 100%;
-    width: 100%;
-}
 
 .centerVert {
-  vertical-align: middle;
+    vertical-align: middle;
 }
 
 .mainpanel.ver0 {
@@ -89,12 +88,12 @@ body {
 }
 
 .mainpanel.ver1 {
-    background-color: 	#4a5f75;
+    background-color: #4a5f75;
     opacity: 0.7;
 }
 
 .mainpanel.ver2 {
-    background-color: 	#eeeeee;
+    background-color: #eeeeee;
 }
 
 .mainpanel.ver3 {
@@ -102,24 +101,33 @@ body {
 }
 
 .mainpanel.ver4 {
-    background-color: 	#e5ccaf;
+    background-color: #e5ccaf;
 }
 
 .centerDiv {
+    display: table;
+    position: relative;
+    padding: 2em 2em 2em 2em;
     background-color: azure;
-    width:50%;
-    height:30%;
-    position:absolute;
-    left:50%;
-    top:50%;
-    margin:-10% 0 0 -25%;
+    width: 50%;
+    min-width: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
 }
 
-.header h1 {
+.centerDiv h1 {
     font-family: 'Oswald', sans-serif;
-    font-size: 50px;
+    font-size: 6em;
+    margin: 0;
 }
 
-.header h2 {
+.centerDiv h2 {
     font-family: 'Roboto', sans-serif;
+    font-size: 1em;
+    margin: 0;
 }
