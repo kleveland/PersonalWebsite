@@ -61,11 +61,19 @@ app.get('/', (req, res) => {
 })
 
 app.get('/admin', (req, res) => {
-    res.render('admin', {
-        title: "Title Message",
-        nav: ["Home", "About Me", "Skills and CV", "Projects"],
-        navLink: ['home', 'about', 'cv', 'projects']
-    });
+    if(req.session.passport.user != null) {
+        res.render('admin', {
+            title: "Title Message",
+            nav: ["Home", "About Me", "Skills and CV", "Projects"],
+            navLink: ['home', 'about', 'cv', 'projects']
+        });
+    } else {
+        res.redirect('/404')
+    }
+})
+
+app.get('/404', (req, res) => {
+    res.render('404');
 })
 
 app.get('/auth/google/callback',
@@ -73,5 +81,10 @@ app.get('/auth/google/callback',
         successRedirect: '/',
         failureRedirect: '/admin'
     }));
+
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
+});
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))

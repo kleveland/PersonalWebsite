@@ -2,14 +2,22 @@ $(document).ready(function () {
     $('#fullpage').fullpage({
         anchors: ['home', 'about', 'cv', 'projects'],
         afterLoad: function (anchorLink, index) {
+            let invCol = invertColor($('#fullpage .section:nth-child(' + index + ') .mainpanel').css('backgroundColor'));
             $('.navbar > ul > li').css('opacity', 1);
-            $('.navbar > ul > li').css('color', invertColor($('#fullpage .section:nth-child(' + index + ') .mainpanel').css('backgroundColor')));
             $('.navbar > ul > li:nth-child(' + index + ')').addClass('navhover');
+            $('.navbar > ul > li').css('color', invCol);
+            $('.userdisp > a').css('background-color', invCol);
+            $('.userdisp > a').css('color', $('#fullpage .section:nth-child(' + index + ') .mainpanel').css('backgroundColor'));
+            $('.userdisp').css('color', invCol);
         },
         onLeave: function (index, nextIndex, direction) {
+            let invCol = invertColor($('#fullpage .section:nth-child(' + nextIndex + ') .mainpanel').css('backgroundColor'));
             $('.navbar > ul > li:nth-child(' + index + ')').removeClass('navhover');
             $('.navbar > ul > li:nth-child(' + nextIndex + ')').addClass('navhover');
-            $('.navbar > ul > li').css('color', invertColor($('#fullpage .section:nth-child(' + nextIndex + ') .mainpanel').css('backgroundColor')));
+            $('.navbar > ul > li').css('color', invCol);
+            $('.userdisp > a').css('background-color', invCol);
+            $('.userdisp > a').css('color', $('#fullpage .section:nth-child(' + nextIndex + ') .mainpanel').css('backgroundColor'));
+            $('.userdisp').css('color', invCol);
         }
     });
 

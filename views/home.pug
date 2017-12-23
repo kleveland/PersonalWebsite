@@ -1,6 +1,12 @@
 extends layout.pug
 
 block content
+    div(class='userdisp')
+        if(user.passport != null && user.passport.user != null)
+            a(href='/logout') Logout
+            p= user.passport.user.displayName
+        else
+            a(href='/auth/google') Login
     div(class='navbar')
         ul
             each val,index in navLink
@@ -17,5 +23,3 @@ block content
                             div(class='col8 centerVert leftBorder padLeft')
                                 h1(class='mainText')
                                 h2(class='subText') Computer Science and Statistics
-                                if(user.passport != null)
-                                    p= user.passport.user.displayName

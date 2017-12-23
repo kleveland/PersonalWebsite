@@ -7,6 +7,37 @@
         background-attachment: fixed;
     }
 
+    .userdisp {
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: 1;
+        margin: 1em 1em 0 0;
+    }
+
+    .userdisp > a {
+        font-family: 'Raleway', sans-serif;
+        -webkit-transition: all .4s ease-in-out, opacity 1s ease-in-out;
+        transition: all .4s ease-in-out, opacity 1s ease-in-out;
+        font-size: 0.9em;
+        color: inherit;
+        display: inline-block;
+        text-decoration: none;
+        margin: 0 0.5em 0 0.5em;
+        padding: 4px 4px 4px 4px;
+        border-radius: 8px;
+    }
+
+    .userdisp > p {
+        font-family: 'Raleway', sans-serif;
+        -webkit-transition: all .4s ease-in-out, opacity 1s ease-in-out;
+        transition: all .4s ease-in-out, opacity 1s ease-in-out;
+        font-size: 1.1em;
+        color: inherit;
+        display: inline-block;
+        margin: 0 0.5em 0 0.5em;
+    }
+
     .navbar {
         position: fixed;
         /*left: 0;*/
