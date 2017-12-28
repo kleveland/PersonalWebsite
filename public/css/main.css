@@ -38,53 +38,33 @@
         margin: 0 0.5em 0 0.5em;
     }
 
-    .navbar {
-        position: fixed;
-        /*left: 0;*/
-        z-index: 1;
-        top: 50%;
-        left: 0;
-        transform: translate(0, -50%);
-        -webkit-transform: translate(0, -50%);
-        -moz-transform: translate(0, -50%);
-        -o-transform: translate(0, -50%);
-        -ms-transform: translate(0, -50%);
-    }
-
-    .navbar > ul {
+    .centerDiv h1 {
+        font-family: 'Oswald', sans-serif;
+        font-size: 6vw;
         margin: 0;
-        padding: 0;
-        list-style-type: none;
+        line-height: 1em;
     }
 
-    .navbar > ul > li:before {
-        content: "— ";
+    .centerDiv h2 {
+        font-family: 'Roboto', sans-serif;
+        font-size: 2vw;
+        margin: 1vw 0 0 0;
     }
 
-    .navbar > ul > li {
-        font-family: 'Raleway', sans-serif;
-        font-size: 1.2em;
-        width: auto;
-        color: #eeeeee;
-        -webkit-transition: all .4s ease-in-out, opacity 1s ease-in-out;
-        transition: all .4s ease-in-out, opacity 1s ease-in-out;
-        opacity: 0;
-        margin-top: 0.7em;
+    .subText {
+        margin-top: 1em;
     }
 
-    .navbar a {
-        color: inherit;
-        text-decoration: none;
+    .rightBorder {
+        border-right: 1px solid black;
     }
 
-    .navbar > ul > li:hover {
-        -webkit-transform: scale(1.4);
-        transform: scale(1.4);
+    .leftBorder {
+        border-left: 1px solid black;
     }
 
-    .navhover {
-        -webkit-transform: scale(1.4);
-        transform: scale(1.4);
+    .padLeft {
+        padding-left: 1em;
     }
 
     .mainpanel {
@@ -93,24 +73,6 @@
         height: 100vh;
         width: 100%;
         float: right;
-    }
-
-    .col4 {
-        width: 33.33%;
-        display: table-cell;
-        height: auto;
-    }
-
-    .col6 {
-        width: 50%;
-        display: table-cell;
-        height: auto;
-    }
-
-    .col8 {
-        width: 66.66%;
-        display: table-cell;
-        height: auto;
     }
 
 
@@ -155,40 +117,3 @@
         -o-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
     }
-
-    .centerDiv h1 {
-        font-family: 'Oswald', sans-serif;
-        font-size: 6em;
-        margin: 0;
-        line-height: 1em;
-        white-space: nowrap;
-    }
-
-    .centerDiv h2 {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1em;
-        margin: 1em 0 0 0;
-    }
-
-    .subText {
-        margin-top: 1em;
-    }
-
-    .mainImg {
-        float: right;
-        margin-right: 1em;
-    }
-
-    .rightBorder {
-        border-right: 1px solid black;
-    }
-
-    .leftBorder {
-        border-left: 1px solid black;
-    }
-
-    .padLeft {
-        padding-left: 1em;
-    }
-
-    @media only screen and (min-width: 1200px) {}

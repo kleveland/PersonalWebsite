@@ -21,7 +21,7 @@ $(document).ready(function () {
         }
     });
 
-    typeOut('.mainText', 'Kacey Cleveland', () => {
+    /*typeOut('.mainText', 'Kacey Cleveland', () => {
         let mainT = $('.mainText').text();
         setInterval(() => {
             console.log(mainT);
@@ -32,7 +32,7 @@ $(document).ready(function () {
             }
             mainT = $('.mainText').text();
         }, 600);
-    })
+    })*/
 
 });
 

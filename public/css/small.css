@@ -1,0 +1,118 @@
+    @media screen and (max-width: 1299px) {
+
+        .centerDiv h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 12vw;
+            margin: 0;
+            line-height: 1em;
+        }
+
+        .centerDiv h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 4vw;
+            margin: 1vw 0 0 0;
+        }
+
+
+        .userdisp > a {
+            font-family: 'Raleway', sans-serif;
+            -webkit-transition: all .4s ease-in-out, opacity 1s ease-in-out;
+            transition: all .4s ease-in-out, opacity 1s ease-in-out;
+            font-size: 1.6vw;
+            color: inherit;
+            display: inline-block;
+            text-decoration: none;
+            margin: 0 0.5em 0 0.5em;
+            padding: 4px 4px 4px 4px;
+            border-radius: 8px;
+        }
+
+        .userdisp > p {
+            font-family: 'Raleway', sans-serif;
+            -webkit-transition: all .4s ease-in-out, opacity 1s ease-in-out;
+            transition: all .4s ease-in-out, opacity 1s ease-in-out;
+            font-size: 2vw;
+            color: inherit;
+            display: inline-block;
+            margin: 0 0.5em 0 0.5em;
+        }
+
+        .navbar {
+            position: fixed;
+            /*left: 0;*/
+            z-index: 1;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .navbar > ul {
+            margin: auto;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar > ul > li {
+            font-family: 'Raleway', sans-serif;
+            font-size: 3vw;
+            width: auto;
+            color: #eeeeee;
+            -webkit-transition: all .4s ease-in-out, opacity 1s ease-in-out;
+            transition: all .4s ease-in-out, opacity 1s ease-in-out;
+            opacity: 0;
+            margin-right: 0.6em;
+            margin-left: 0.6em;
+            margin-bottom: 0.7em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .navbar a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .navbar > ul > li:hover {
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+
+        .navhover {
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+
+        .col2 {
+            display: block;
+            height: auto;
+        }
+
+        .col4 {
+            display: block;
+            height: auto;
+        }
+
+        .col6 {
+            display: block;
+            height: auto;
+        }
+
+        .col8 {
+            display: block;
+            height: auto;
+        }
+
+        .centerVert {
+            text-align: center;
+        }
+
+        h2.subText {
+            display: block;
+        }
+
+    }

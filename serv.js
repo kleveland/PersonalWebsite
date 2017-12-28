@@ -1,10 +1,20 @@
-const express = require('express')
-const path = require('path')
-const app = express()
-const config = require('./config.json')
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const session = require('express-session')
+const express = require('express'),
+    path = require('path'),
+    app = express(),
+    config = require('./config.json'),
+    passport = require('passport'),
+    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
+    session = require('express-session'),
+    mysql = require('mysql'),
+    connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'personaldb'
+    }),
+      sql = require('./sqlfunc.js')
+
+sql.findCreateUser(connection, 0)
 //passport setup
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -61,7 +71,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/admin', (req, res) => {
-    if(req.session.passport.user != null) {
+    if (req.session.passport != null && req.session.passport.user != null) {
         res.render('admin', {
             title: "Title Message",
             nav: ["Home", "About Me", "Skills and CV", "Projects"],

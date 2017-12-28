@@ -3,6 +3,7 @@ extends layout.pug
 block content
     div(class='userdisp')
         if(user.passport != null && user.passport.user != null)
+            a(href='/admin') Admin
             a(href='/logout') Logout
             p= user.passport.user.displayName
         else
@@ -17,9 +18,15 @@ block content
             div(class='section')
                 div(class='mainpanel ver' + index)
                     div(class='centerDiv')
+                        div(class='col2 centerVert')
                         if(index==0)
-                            div(class='col4 centerVert')
+                            div(class='col2 centerVert')
                                 img(class='mainImg' src='http://via.placeholder.com/200x200')
                             div(class='col8 centerVert leftBorder padLeft')
-                                h1(class='mainText')
+                                h1(class='mainText') Kacey Cleveland
                                 h2(class='subText') Computer Science and Statistics
+                        if(index==1)
+                            div(class='col6 centerVert')
+                                p Test div
+                            div(class='col6 centerVert')
+                                p test 2
