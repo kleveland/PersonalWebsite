@@ -14,7 +14,6 @@ const express = require('express'),
     }),
       sql = require('./sqlfunc.js')
 
-sql.findCreateUser(connection, 0)
 //passport setup
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -30,11 +29,12 @@ passport.use(new GoogleStrategy({
         callbackURL: config.auth.google.callback
     },
     function (accessToken, refreshToken, profile, done) {
-        /*User.findOrCreate({ googleId: profile.id }, function (err, user) {
-          return done(err, user);
-        });*/
-        console.log("connected", JSON.stringify(profile))
-        return done(null, profile);
+        sql.findCreateUser(connection, profile, function (user) {
+            console.log('done', user);
+            return done(null, user);
+        });
+        //console.log("connected", JSON.stringify(profile))
+        //return done(null, profile);
     }
 ));
 

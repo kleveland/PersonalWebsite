@@ -5,7 +5,7 @@ block content
         if(user.passport != null && user.passport.user != null)
             a(href='/admin') Admin
             a(href='/logout') Logout
-            p= user.passport.user.displayName
+            p= user.passport.user.dispName
         else
             a(href='/auth/google') Login
     div(class='navbar')
