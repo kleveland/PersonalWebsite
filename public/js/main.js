@@ -1,6 +1,8 @@
 $(document).ready(function () {
+    navAnc = navAnc.split(',');
+    console.log(navAnc);
     $('#fullpage').fullpage({
-        anchors: ['home', 'about', 'cv', 'projects'],
+        anchors: navAnc,
         afterLoad: function (anchorLink, index) {
             let invCol = invertColor($('#fullpage .section:nth-child(' + index + ') .mainpanel').css('backgroundColor'));
             $('.navbar > ul > li').css('opacity', 1);

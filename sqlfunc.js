@@ -40,5 +40,19 @@ module.exports = {
                 cb(res);
             }
         })
+    },
+
+    isAdmin: function(conn, userid, groupid, cb) {
+        conn.query('SELECT Admin FROM users INNER JOIN groups ON users.GroupID = groups.GroupID WHERE users.UserID = ' + userid, function(err, res, fields) {
+            if(err) throw err;
+            console.log(res[0].Admin);
+            if(res[0].Admin == true) {
+                console.log("admin");
+                cb(true);
+            } else {
+                console.log("user");
+                cb(false);
+            }
+        })
     }
 }

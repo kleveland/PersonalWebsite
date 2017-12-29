@@ -1,9 +1,12 @@
 extends layout.pug
-
+include sections/descrip.pug
+include sections/intro.pug
+include sections/list.pug
 block content
     div(class='userdisp')
         if(user.passport != null && user.passport.user != null)
-            a(href='/admin') Admin
+            if(user.passport.user.isAdmin)
+                a(href='/admin') Admin
             a(href='/logout') Logout
             p= user.passport.user.dispName
         else
@@ -14,19 +17,12 @@ block content
                 li
                     a(href='#'+val)= nav[index]
     div(id='fullpage')
-        each val,index in nav
+        each val,index in navType
             div(class='section')
                 div(class='mainpanel ver' + index)
                     div(class='centerDiv')
                         div(class='col2 centerVert')
-                        if(index==0)
-                            div(class='col2 centerVert')
-                                img(class='mainImg' src='http://via.placeholder.com/200x200')
-                            div(class='col8 centerVert leftBorder padLeft')
-                                h1(class='mainText') Kacey Cleveland
-                                h2(class='subText') Computer Science and Statistics
-                        if(index==1)
-                            div(class='col6 centerVert')
-                                p Test div
-                            div(class='col6 centerVert')
-                                p test 2
+                        if(val==0)
+                            +intro('http://via.placeholder.com/200x200','Kacey Cleveland','Computer Science and Statistics')
+                        if(val==1)
+                            +descrip

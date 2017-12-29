@@ -7,12 +7,26 @@ const express = require('express'),
     session = require('express-session'),
     mysql = require('mysql'),
     connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'personaldb'
+        host: config.database.host,
+        user: config.database.user,
+        password: config.database.password,
+        database: config.database.database
     }),
-      sql = require('./sqlfunc.js')
+    sql = require('./sqlfunc.js');
+let menu = {name: [],
+            short: [],
+            type: []
+           };
+connection.query('SELECT * FROM sections', function (err, res, fields) {
+    for(let i=0; i<res.length; i++) {
+        menu.name[i] = res[i].Name;
+        menu.short[i] = res[i].shorthand;
+        menu.type[i] = res[i].Type;
+    }
+
+    console.log(menu);
+
+});
 
 //passport setup
 passport.serializeUser(function (user, done) {
@@ -30,8 +44,11 @@ passport.use(new GoogleStrategy({
     },
     function (accessToken, refreshToken, profile, done) {
         sql.findCreateUser(connection, profile, function (user) {
-            console.log('done', user);
-            return done(null, user);
+            sql.isAdmin(connection, user.UserID, user.GroupID, (isAdmin) => {
+                user.isAdmin = isAdmin;
+                console.log('done', user);
+                return done(null, user);
+            })
         });
         //console.log("connected", JSON.stringify(profile))
         //return done(null, profile);
@@ -64,22 +81,11 @@ app.get('/', (req, res) => {
     console.log(req.session)
     res.render('home', {
         title: "Title Message",
-        nav: ["Home", "About Me", "Skills and CV", "Projects"],
-        navLink: ['home', 'about', 'cv', 'projects'],
+        nav: menu.name,
+        navType: menu.type,
+        navLink: menu.short,
         user: req.session
     });
-})
-
-app.get('/admin', (req, res) => {
-    if (req.session.passport != null && req.session.passport.user != null) {
-        res.render('admin', {
-            title: "Title Message",
-            nav: ["Home", "About Me", "Skills and CV", "Projects"],
-            navLink: ['home', 'about', 'cv', 'projects']
-        });
-    } else {
-        res.redirect('/404')
-    }
 })
 
 app.get('/404', (req, res) => {
@@ -96,5 +102,7 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
+
+require('./admin.js')(app)
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
