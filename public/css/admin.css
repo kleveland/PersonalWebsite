@@ -1,15 +1,35 @@
+body {
+    background-color: #eeeeee;
+    margin: 0;
+}
+
+.layout ul {
+    list-style: none;
+    padding: none;
+    -webkit-padding-start: 0;
+}
+
+.editblock {
+    margin-right: 1.25%;
+    float: right;
+    width: 98.75%;
+    height: auto;
+    background-color: white;
+    margin-bottom: 20px;
+}
 .apanel {
     position: fixed;
     text-align: center;
-    width: 45px;
+    width: 2.5%;
+    min-width: 30px;
     height: 90vh;
     top: 50%;
-    left: 20px;
-    transform: translate(0, -50%);
-    -webkit-transform: translate(0, -50%);
-    -moz-transform: translate(0, -50%);
-    -o-transform: translate(0, -50%);
-    -ms-transform: translate(0, -50%);
+    left: 1.25%;
+    transform: translate(-1.25%, -50%);
+    -webkit-transform: translate(-1.25%, -50%);
+    -moz-transform: translate(-1.25%, -50%);
+    -o-transform: translate(-1.25%, -50%);
+    -ms-transform: translate(-1.25%, -50%);
     background-color: gray;
     border-radius: 5px;
 }
@@ -25,44 +45,22 @@
     border-bottom: 1px solid black;
 }
 
-}
-
-.centerDiv {
+.layout {
     display: table;
     position: absolute;
     /*padding: 2em 2em 2em 2em;*/
-    background-color: azure;
     width: 100%;
     min-width: 1300px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
 }
 
-.col2 {
-    width: 16.6666%;
+.colnav {
+    width: 5%;
     display: table-cell;
     height: auto;
 }
 
-.col4 {
-    width: 33.33%;
-    display: table-cell;
-    height: auto;
-}
-
-.col6 {
-    width: 50%;
-    display: table-cell;
-    height: auto;
-}
-
-.col8 {
-    width: 66.66%;
+.colcontent {
+        width: 95%;
     display: table-cell;
     height: auto;
 }

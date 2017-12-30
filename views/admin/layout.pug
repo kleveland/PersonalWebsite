@@ -7,3 +7,19 @@ html
         link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
   body
     block content
+        block navbar
+            div(class='apanel')
+                ul
+                    a(href='/admin/users')
+                        li
+                            i(class="material-icons") account_circle
+                    a(href='/admin/setting')
+                        li
+                            i(class="material-icons") build
+                    a(href='/admin/edit')
+                        li
+                            i(class="material-icons") dashboard
+        div(class='layout')
+            div(class='colnav')
+            div(class='colcontent')
+                block innercontent

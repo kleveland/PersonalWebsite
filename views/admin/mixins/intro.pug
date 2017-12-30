@@ -1,0 +1,8 @@
+mixin intro(id, imglink, maintext, subtext)
+    form(action='/admin/updateblock' method='post')
+        input(type="hidden" name="id" value=id)
+        input(type="hidden" name="type" value=0)
+        input(type='text' name='img' value=imglink)
+        input(type='text' name='maintext' value=maintext)
+        input(type='text' name='subtext' value=subtext)
+        input(type='submit')

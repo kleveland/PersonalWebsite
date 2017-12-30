@@ -1,0 +1,16 @@
+extends layout.pug
+include mixins/descrip.pug
+include mixins/intro.pug
+include mixins/list.pug
+
+block innercontent
+    ul
+        for val,index in name
+            li(class="editblock")
+                case type[index]
+                    when 0
+                        +intro(id[index], dat[index].field1, dat[index].field2, dat[index].field3)
+                    when 1
+                        +descrip(id[index], dat[index].field1, dat[index].field2)
+                    when 2
+                        +list

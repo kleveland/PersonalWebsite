@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, menu) {
 
     app.get('/admin', (req, res) => {
         //sql.isAdmin(connection, req.session.passport.user.UserID, req.session.passport.user.GroupID, (isAdmin) => {
@@ -14,9 +14,13 @@ module.exports = function (app) {
         //})
     })
 
-    app.get('/admin/dashboard', function (req, res) {
-
+    app.get('/admin/edit', function (req, res) {
+        res.render('admin/edit', menu)
     });
+
+    app.post('admin/updateblock', function(req,res) {
+        console.log("posting", req.body.id, req.body.type)
+    })
 
     app.get('/admin/settings', function (req, res) {
 

@@ -13,18 +13,42 @@ const express = require('express'),
         database: config.database.database
     }),
     sql = require('./sqlfunc.js');
-let menu = {name: [],
-            short: [],
-            type: []
-           };
+let menu = {
+    name: [],
+    short: [],
+    type: [],
+    dat: [],
+    id: []
+};
 connection.query('SELECT * FROM sections', function (err, res, fields) {
-    for(let i=0; i<res.length; i++) {
+    for (let i = 0; i < res.length; i++) {
         menu.name[i] = res[i].Name;
         menu.short[i] = res[i].shorthand;
         menu.type[i] = res[i].Type;
+        menu.id[i] = res[i].SID;
     }
 
-    console.log(menu);
+    let secname = '';
+
+    for (let i = 0; i < menu.name.length; i++) {
+        switch (menu.type[i]) {
+            case 0:
+                secname = 'sec_intro'
+                break;
+            case 1:
+                secname = 'sec_descrip'
+                break;
+            case 2:
+                secname = 'sec_list'
+                break;
+        }
+        connection.query('SELECT * FROM ' + secname + ' WHERE SID="' + menu.id[i] + '"', function (err, res, fields) {
+            menu.dat[i] = res[0];
+            //console.log('tester',menu.dat[i].SID);
+        })
+    }
+
+    //console.log(menu);
 
 });
 
@@ -84,7 +108,8 @@ app.get('/', (req, res) => {
         nav: menu.name,
         navType: menu.type,
         navLink: menu.short,
-        user: req.session
+        dat: menu.dat,
+        user: req.session,
     });
 })
 
@@ -103,6 +128,6 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-require('./admin.js')(app)
+require('./admin.js')(app, menu)
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))

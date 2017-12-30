@@ -23,6 +23,6 @@ block content
                     div(class='centerDiv')
                         div(class='col2 centerVert')
                         if(val==0)
-                            +intro('http://via.placeholder.com/200x200','Kacey Cleveland','Computer Science and Statistics')
+                            +intro(dat[index].field1, dat[index].field2, dat[index].field3)
                         if(val==1)
-                            +descrip
+                            +descrip(dat[index].field1, dat[index].field2)
