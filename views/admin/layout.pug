@@ -5,7 +5,14 @@ html
     block scripts
         link(rel="stylesheet", href="/static/css/admin.css")
         link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+        script(src='/static/js/adminmain.js')
   body
+    block notification
+        div(class='notification')
+            div(class='notifcontent')
+                p Test
+            div(class='closenotif')
     block content
         block navbar
             div(class='apanel')

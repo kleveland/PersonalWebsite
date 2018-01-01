@@ -5,6 +5,7 @@ const express = require('express'),
     passport = require('passport'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     session = require('express-session'),
+    bodyparser = require('body-parser'),
     mysql = require('mysql'),
     connection = mysql.createConnection({
         host: config.database.host,
@@ -20,7 +21,10 @@ let menu = {
     dat: [],
     id: []
 };
-connection.query('SELECT * FROM sections', function (err, res, fields) {
+
+
+sql.reInitSections(connection, menu);
+/*connection.query('SELECT * FROM sections', function (err, res, fields) {
     for (let i = 0; i < res.length; i++) {
         menu.name[i] = res[i].Name;
         menu.short[i] = res[i].shorthand;
@@ -50,7 +54,7 @@ connection.query('SELECT * FROM sections', function (err, res, fields) {
 
     //console.log(menu);
 
-});
+});*/
 
 //passport setup
 passport.serializeUser(function (user, done) {
@@ -88,7 +92,10 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use( bodyparser.json() );       // to support JSON-encoded bodies
+app.use(bodyparser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.set('views', __dirname + '/views');
@@ -128,6 +135,6 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-require('./admin.js')(app, menu)
+require('./admin.js')(app, menu, connection, sql)
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))

@@ -3,28 +3,94 @@ body {
     margin: 0;
 }
 
+.notification {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    height: 50px;
+    background-color: aqua;
+}
+
+.notifcontent {
+    display: inline-block;
+    width: 90%;
+}
+.closenotif {
+    height: 100%;
+    width: 10%;
+    display: inline-block;
+    background-color: coral;
+    float: right;
+}
+
 .layout ul {
     list-style: none;
     padding: none;
     -webkit-padding-start: 0;
+    margin-top: 2vh;
+}
+
+.topedit {
+    width: 100%;
+    padding: 5px 5px 5px 5px;
+    height: auto;
+    background-color: blue;
+}
+
+.contentedit {
+    width: 100%;
+    height: auto;
+    padding: 5px 5px 5px 5px;
+}
+
+.bottomedit {
+    width: 100%;
+    height: 20px;
+    background-color: lightblue;
 }
 
 .editblock {
+    overflow: hidden;
+    width: 98.75%;
+    height: auto;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.buttoncont {
+    text-align: center;
     margin-right: 1.25%;
     float: right;
     width: 98.75%;
     height: auto;
     background-color: white;
     margin-bottom: 20px;
+
 }
+
+.addblock {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-color: aqua;
+}
+
+.removeblock {
+    display: inline-block;
+    float: right;
+    width: 50px;
+    height: auto;
+    background-color: red;
+}
+
 .apanel {
     position: fixed;
     text-align: center;
-    width: 2.5%;
-    min-width: 30px;
-    height: 90vh;
+    width: 2.5vw;
+    height: 96%;
     top: 50%;
-    left: 1.25%;
+    margin-left: 1.25%;
     transform: translate(-1.25%, -50%);
     -webkit-transform: translate(-1.25%, -50%);
     -moz-transform: translate(-1.25%, -50%);
@@ -42,25 +108,28 @@ body {
 
 .apanel ul li {
     margin: 5px 0 5px 0;
+    font-size: 2vw;
     border-bottom: 1px solid black;
 }
 
+.apanel ul li>i {
+    font-size: 2vw;
+}
+
 .layout {
-    display: table;
     position: absolute;
     /*padding: 2em 2em 2em 2em;*/
     width: 100%;
-    min-width: 1300px;
 }
 
 .colnav {
-    width: 5%;
-    display: table-cell;
+    width: 5vw;
+    display: inline-block;
     height: auto;
 }
 
 .colcontent {
-        width: 95%;
-    display: table-cell;
+        width: 95vw;
+    display: inline-block;
     height: auto;
 }

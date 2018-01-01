@@ -1,5 +1,5 @@
 mixin descrip(id, text1, text2)
-    form(action='/updateblock' method='post')
+    form(action='/admin/updateblock' method='post')
         input(type="hidden" name="id" value=id)
         input(type="hidden" name="type" value=1)
         input(type='text' name='text1' value=text1)
