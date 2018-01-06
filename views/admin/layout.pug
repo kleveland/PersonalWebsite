@@ -5,14 +5,19 @@ html
     block scripts
         link(rel="stylesheet", href="/static/css/admin.css")
         link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel="stylesheet", href="/static/css/spectrum.css")
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js')
         script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+        script(src='/static/js/spectrum.js')
         script(src='/static/js/adminmain.js')
   body
     block notification
-        div(class='notification')
-            div(class='notifcontent')
-                p Test
-            div(class='closenotif')
+        ul(class="notcont")
+            each val,index in notif
+                li(class="notification")
+                    div(class='notifcontent' id=val.NID)
+                        p= val.Text
+                    div(class='closenotif' id=val.NID) X
     block content
         block navbar
             div(class='apanel')

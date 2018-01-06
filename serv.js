@@ -13,17 +13,36 @@ const express = require('express'),
         password: config.database.password,
         database: config.database.database
     }),
-    sql = require('./sqlfunc.js');
+    sql = require('./sqlfunc.js'),
+    socketIO = require('socket.io'),
+    ioNotif = require('./notif.js');
 let menu = {
     name: [],
     short: [],
     type: [],
     dat: [],
-    id: []
+    id: [],
+    bg: []
 };
 
+let serv = app.listen(3000, () => console.log('Example app listening on port 3000!'))
 
-sql.reInitSections(connection, menu);
+let io = socketIO(serv);
+
+ioNotif.set(io, connection);
+
+io.on('connection', (socket) => {
+    console.log("Connected.");
+    socket.on('notif delete', (dat) => {
+        console.log("NOTIF DELETE------------------------------------------------------")
+        console.log(dat);
+        io.emit('notif delete other', dat);
+        ioNotif.deleteNotif(dat.NID);
+    })
+})
+
+
+sql.reInitSections(connection, menu, () => {});
 /*connection.query('SELECT * FROM sections', function (err, res, fields) {
     for (let i = 0; i < res.length; i++) {
         menu.name[i] = res[i].Name;
@@ -74,6 +93,7 @@ passport.use(new GoogleStrategy({
         sql.findCreateUser(connection, profile, function (user) {
             sql.isAdmin(connection, user.UserID, user.GroupID, (isAdmin) => {
                 user.isAdmin = isAdmin;
+                ioNotif.setUser(user.UserID);
                 console.log('done', user);
                 return done(null, user);
             })
@@ -92,9 +112,9 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use( bodyparser.json() );       // to support JSON-encoded bodies
-app.use(bodyparser.urlencoded({     // to support URL-encoded bodies
-  extended: true
+app.use(bodyparser.json()); // to support JSON-encoded bodies
+app.use(bodyparser.urlencoded({ // to support URL-encoded bodies
+    extended: true
 }));
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
@@ -109,13 +129,15 @@ app.get('/auth/google',
     }));
 
 app.get('/', (req, res) => {
-    console.log(req.session)
+    //console.log(req.session)
+    console.log("MENU", menu.bg)
     res.render('home', {
         title: "Title Message",
         nav: menu.name,
         navType: menu.type,
         navLink: menu.short,
         dat: menu.dat,
+        bg: menu.bg,
         user: req.session,
     });
 })
@@ -135,6 +157,4 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-require('./admin.js')(app, menu, connection, sql)
-
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+require('./admin.js')(app, menu, connection, sql, ioNotif)

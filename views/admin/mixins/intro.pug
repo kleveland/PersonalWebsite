@@ -1,8 +1,24 @@
-mixin intro(id, imglink, maintext, subtext)
+mixin intro(id, color, imglink, maintext, subtext)
     form(action='/admin/updateblock' method='post')
         input(type="hidden" name="id" value=id)
         input(type="hidden" name="type" value=0)
-        input(type='text' name='img' value=imglink)
-        input(type='text' name='maintext' value=maintext)
-        input(type='text' name='subtext' value=subtext)
-        input(type='submit')
+        div(class='txtinput')
+            p Image Link (200x200):
+            input(type='text' name='img' value=imglink)
+        div(class='txtinput')
+            p Main Text:
+            input(type='text' name='maintext' value=maintext)
+        div(class='txtinput')
+            p Sub Text:
+            input(type='text' name='subtext' value=subtext)
+        div(class='txtinput')
+            p BG Color:
+            input(type='text' name='bgcolor' id='col'+id value=color)
+        script.
+            $('#col' + '#{id}').spectrum({
+                preferredFormat: "rgb",
+                color: "#{color}",
+                showInput: true,
+                showAlpha: true
+            });
+        input(class='submitbut' type='submit')

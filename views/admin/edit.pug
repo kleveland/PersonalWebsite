@@ -17,15 +17,36 @@ block innercontent
         for val,index in name
             li(class="editblock")
                 div(class="topedit")= name[index]
+                    div(class="topeditbut circlebut" id="close" + id[index]) x
+                    script.
+                        $('#close' + '#{id[index]}').click(function() {
+                            let el = this;
+                            console.log("close clicked:", "#{id[index]}")
+                            $.post("/admin/deleteblock", { id: '#{id[index]}', type: '#{type[index]}', name: '#{name[index]}'} , function(data) {
+                                $(el).parent().parent().remove();
+                            })
+                        })
                 div(class="contentedit")
                     case type[index]
                         when 0
-                            +intro(id[index], dat[index].img, dat[index].maintext, dat[index].subtext)
+                            +intro(id[index], bg[index], dat[index].img, dat[index].maintext, dat[index].subtext)
                         when 1
-                            +descrip(id[index], dat[index].text1, dat[index].text2)
+                            +descrip(id[index], bg[index], dat[index].text1, dat[index].text2)
                         when 2
                             +list
                 div(class="bottomedit")
-                    div(class="removeblock")
         li(class="buttoncont")
-            div(class="addblock")
+            form(action="/admin/insertblock" method="post")
+                div(class='secinput')
+                    p Name:
+                    input(type="text" name="name")
+                div(class='secinput')
+                    p Shorthand:
+                    input(type="text" name="shorthand")
+                div(class='secinput')
+                    p Type:
+                    select(name="type")
+                        option(value=0) Intro
+                        option(value=1) Two-Col Description
+                        option(value=2) List
+                input(type="submit" class="addblock" value="Add Section")

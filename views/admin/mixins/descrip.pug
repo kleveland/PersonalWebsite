@@ -1,7 +1,21 @@
-mixin descrip(id, text1, text2)
+mixin descrip(id, color, text1, text2)
     form(action='/admin/updateblock' method='post')
         input(type="hidden" name="id" value=id)
         input(type="hidden" name="type" value=1)
-        input(type='text' name='text1' value=text1)
-        input(type='text' name='text2' value=text2)
-        input(type='submit')
+        div(class='txtinput')
+            p Text 1:
+            input(type='text' name='text1' value=text1)
+        div(class='txtinput')
+            p Text 2:
+            input(type='text' name='text2' value=text2)
+        div(class='txtinput')
+            p BG Color:
+            input(type='text' name='bgcolor' id='col'+id value=color)
+        script.
+            $('#col' + '#{id}').spectrum({
+                preferredFormat: "rgb",
+                color: "#{color}",
+                showInput: true,
+                showAlpha: true
+            });
+        input(class='submitbut' type='submit')

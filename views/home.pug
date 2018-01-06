@@ -19,7 +19,7 @@ block content
     div(id='fullpage')
         each val,index in navType
             div(class='section')
-                div(class='mainpanel ver' + index)
+                div(class='mainpanel ver' + index style={background: bg[index]})
                     div(class='centerDiv')
                         div(class='col2 centerVert')
                         if(val==0)
