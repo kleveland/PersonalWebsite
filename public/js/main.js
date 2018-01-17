@@ -23,19 +23,6 @@ $(document).ready(function () {
         }
     });
 
-    /*typeOut('.mainText', 'Kacey Cleveland', () => {
-        let mainT = $('.mainText').text();
-        setInterval(() => {
-            console.log(mainT);
-            if (mainT[mainT.length - 1] == '_') {
-                $('.mainText').text(mainT.replace('_', ''));
-            } else {
-                $('.mainText').text(mainT + '_');
-            }
-            mainT = $('.mainText').text();
-        }, 600);
-    })*/
-
 });
 
 function invertColor(rgb) {

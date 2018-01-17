@@ -6,6 +6,8 @@ const express = require('express'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     session = require('express-session'),
     bodyparser = require('body-parser'),
+    //parser = require('bboxed'),
+    sanitizeHtml = require('sanitize-html'),
     mysql = require('mysql'),
     connection = mysql.createConnection({
         host: config.database.host,
@@ -21,59 +23,31 @@ let menu = {
     short: [],
     type: [],
     dat: [],
+    datparsed: [],
     id: [],
     bg: []
 };
 
+/*parser.addTag('center', {
+    open: function(token, options) {
+        return '<span style="display: block; text-align: center;">';
+    },
+    close: '</spaan>'
+});*/
+
+connection.query('SELECT * FROM sections', function(err, res, fields) {
+    if(err){
+        throw new Error("Problem with connection to DB.");
+    }
+})
+
 let serv = app.listen(3000, () => console.log('Example app listening on port 3000!'))
 
 let io = socketIO(serv);
-
 ioNotif.set(io, connection);
-
-io.on('connection', (socket) => {
-    console.log("Connected.");
-    socket.on('notif delete', (dat) => {
-        console.log("NOTIF DELETE------------------------------------------------------")
-        console.log(dat);
-        io.emit('notif delete other', dat);
-        ioNotif.deleteNotif(dat.NID);
-    })
-})
-
+ioNotif.initConnection();
 
 sql.reInitSections(connection, menu, () => {});
-/*connection.query('SELECT * FROM sections', function (err, res, fields) {
-    for (let i = 0; i < res.length; i++) {
-        menu.name[i] = res[i].Name;
-        menu.short[i] = res[i].shorthand;
-        menu.type[i] = res[i].Type;
-        menu.id[i] = res[i].SID;
-    }
-
-    let secname = '';
-
-    for (let i = 0; i < menu.name.length; i++) {
-        switch (menu.type[i]) {
-            case 0:
-                secname = 'sec_intro'
-                break;
-            case 1:
-                secname = 'sec_descrip'
-                break;
-            case 2:
-                secname = 'sec_list'
-                break;
-        }
-        connection.query('SELECT * FROM ' + secname + ' WHERE SID="' + menu.id[i] + '"', function (err, res, fields) {
-            menu.dat[i] = res[0];
-            //console.log('tester',menu.dat[i].SID);
-        })
-    }
-
-    //console.log(menu);
-
-});*/
 
 //passport setup
 passport.serializeUser(function (user, done) {
@@ -94,12 +68,9 @@ passport.use(new GoogleStrategy({
             sql.isAdmin(connection, user.UserID, user.GroupID, (isAdmin) => {
                 user.isAdmin = isAdmin;
                 ioNotif.setUser(user.UserID);
-                console.log('done', user);
                 return done(null, user);
             })
         });
-        //console.log("connected", JSON.stringify(profile))
-        //return done(null, profile);
     }
 ));
 
@@ -121,16 +92,12 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
-console.log(path.join(__dirname, 'public'));
-
 app.get('/auth/google',
     passport.authenticate('google', {
         scope: ['email', 'profile']
     }));
 
 app.get('/', (req, res) => {
-    //console.log(req.session)
-    console.log("MENU", menu.bg)
     res.render('home', {
         title: "Title Message",
         nav: menu.name,
@@ -157,4 +124,4 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-require('./admin.js')(app, menu, connection, sql, ioNotif)
+require('./admin.js')(app, menu, connection, sql, ioNotif, sanitizeHtml)

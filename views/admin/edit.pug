@@ -5,7 +5,7 @@ include mixins/list.pug
 
 block innercontent
     script.
-        console.log("#{not}")
+        let selected = null;
         let not;
         if("#{not}" != '') {
             console.log("OK", "#{not}")

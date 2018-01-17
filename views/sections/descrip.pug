@@ -1,5 +1,7 @@
 mixin descrip(left, right)
     div(class='col6 centerVert')
-        p= left
+        html.
+            !{left}
     div(class='col6 centerVert')
-        p= right
+        html.
+            !{right}

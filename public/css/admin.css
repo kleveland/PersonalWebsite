@@ -11,7 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    z-index: 1;
+    z-index: 20;
     list-style: none;
     margin: 0 0 10px 0;
 }
@@ -41,6 +41,7 @@ body {
     text-align: center;
     line-height: 50px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .layout ul {
@@ -74,11 +75,14 @@ body {
 .contentedit {
     position: relative;
     height: auto;
+    overflow: hidden;
 }
 
 .bottomedit {
-    position: relative;
+    position: absolute;
     height: 15px;
+    bottom: 0;
+    width: 100%;
     background-color: #36393e;
 }
 
@@ -196,8 +200,7 @@ body {
 }
 
 .submitbut {
-    margin-bottom: 17px;
-    margin-left: 20px;
+    margin: 0 10px 27px 17px;
     background-color: Transparent;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -207,9 +210,29 @@ body {
     border-radius: 20px;
     width: 100px;
     height: 30px;
+    font-size: 1em;
     color: #23272a;
     text-align: center;
     font-family: 'Roboto', sans-serif;
+    display: inline-block;
+    padding: 4px 6px 4px 6px;
+}
+
+.coppas {
+    margin: 0 0 8px 17px;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    border: 2px solid #7289da;
+    border-radius: 20px;
+    width: 100px;
+    height: 30px;
+    color: #23272a;
+    font-size: 1em;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    line-height: 30px;
+    display: inline-block;
 }
 
 .addblock {
@@ -229,4 +252,25 @@ body {
     font-family: 'Roboto', sans-serif;
     width: 200px;
     height: 40px;
+}
+
+.texted {
+    width: 80%;
+    height: 200px;
+}
+
+.textfields {
+    display: inline-block;
+    width: auto;
+}
+
+.textbut {
+    width: 100%;
+}
+
+.texteditor {
+    position: relative;
+    display: inline-block;
+    float: right;
+    margin: 10px 10px 25px 0;
 }

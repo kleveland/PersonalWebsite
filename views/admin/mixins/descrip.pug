@@ -2,15 +2,42 @@ mixin descrip(id, color, text1, text2)
     form(action='/admin/updateblock' method='post')
         input(type="hidden" name="id" value=id)
         input(type="hidden" name="type" value=1)
-        div(class='txtinput')
-            p Text 1:
-            input(type='text' name='text1' value=text1)
-        div(class='txtinput')
-            p Text 2:
-            input(type='text' name='text2' value=text2)
-        div(class='txtinput')
-            p BG Color:
-            input(type='text' name='bgcolor' id='col'+id value=color)
+        div(class='textfields')
+            div(class='txtinput')
+                p Text 1:
+                input(type='text' id='inp'+id name='text1' value=text1)
+            div(class='txtinput')
+                p Text 2:
+                input(type='text' id='inp2'+id name='text2' value=text2)
+            div(class='txtinput')
+                p BG Color:
+                input(type='text' name='bgcolor' id='col'+id value=color)
+            div(class='textbut')
+                div(class='coppas' id="copy" + id) Copy
+                div(class='coppas' id="paste" + id) Paste
+            input(class='submitbut' type='submit')
+        div(class='texteditor')
+            textarea(id="edit" + id class='texted')
+        script.
+            var textarea = document.getElementById('edit#{id}');
+                sceditor.create(textarea, {
+                style: '/static/bbcode/minified/themes/content/default.min.css',
+                emoticonsRoot: '/static/bbcode/'
+            });
+
+            $('#inp#{id}').click(function() {
+                selected = this;
+            })
+            $('#inp2#{id}').click(function() {
+                selected = this;
+            })
+
+            $('#copy#{id}').click(function() {
+                sceditor.instance(document.getElementById('edit#{id}')).val($(selected).val());
+            })
+            $('#paste#{id}').click(function() {
+                $(selected).val(sceditor.instance(document.getElementById('edit#{id}')).val());
+            })
         script.
             $('#col' + '#{id}').spectrum({
                 preferredFormat: "rgb",
@@ -18,4 +45,3 @@ mixin descrip(id, color, text1, text2)
                 showInput: true,
                 showAlpha: true
             });
-        input(class='submitbut' type='submit')

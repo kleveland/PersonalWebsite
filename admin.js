@@ -1,4 +1,4 @@
-module.exports = function (app, menu, conn, sql, io) {
+module.exports = function (app, menu, conn, sql, io, sanitizeHtml) {
     function handleAdmin(req, res, menu, cb) {
         if (req.session.passport != null && req.session.passport.user != null && req.session.passport.user.isAdmin) {
             io.getNotif((not) => {
@@ -11,7 +11,6 @@ module.exports = function (app, menu, conn, sql, io) {
     }
 
     app.get('/admin', (req, res) => {
-        //sql.isAdmin(connection, req.session.passport.user.UserID, req.session.passport.user.GroupID, (isAdmin) => {
         handleAdmin(req, res, menu, () => {
             res.render('admin/admin', menu);
         })
@@ -20,17 +19,14 @@ module.exports = function (app, menu, conn, sql, io) {
 
     app.get('/admin/edit', function (req, res) {
         handleAdmin(req, res, menu, () => {
-            console.log("MENU", menu);
             res.render('admin/edit', menu)
         })
     });
 
     app.post('/admin/deleteblock', function (req, res) {
         handleAdmin(req, res, menu, () => {
-            console.log(req.body)
             sql.deleteSection(conn, req.body.type, req.body.id, () => {
-                console.log("delete complete")
-                sql.reInitSections(conn, menu, () => {
+                sql.reInitSections(conn, menu, sanitizeHtml, () => {
                     let idx;
                     for (let i = 0; i < menu.id.length; i++) {
                         if (menu.id[i] == req.body.id) {
@@ -43,7 +39,6 @@ module.exports = function (app, menu, conn, sql, io) {
                     console.log(keys);
                     for (let i = 0; i < keys.length; i++) {
                         menu[keys[i]].splice(idx, 1);
-                        console.log(keys[i], "removed.");
                     }
                     io.postNotif('Removed section "' + req.body.name + '".', 1);
                     res.redirect('/admin/edit')
@@ -54,10 +49,8 @@ module.exports = function (app, menu, conn, sql, io) {
 
     app.post('/admin/updateblock', function (req, res) {
         handleAdmin(req, res, menu, () => {
-            console.log("body", req.body);
-            sql.updateSection(conn, req.body, () => {
+            sql.updateSection(conn, req.body, sanitizeHtml, () => {
                 sql.reInitSections(conn, menu, () => {
-                    //res.sendStatus(200);
                     let updateName = '';
                     for (let i = 0; i < menu.name.length; i++) {
                         if (menu.id[i] == req.body.id) {
@@ -74,10 +67,8 @@ module.exports = function (app, menu, conn, sql, io) {
 
     app.post('/admin/insertblock', function (req, res) {
         handleAdmin(req, res, menu, () => {
-            console.log("body2", req.body);
             sql.insertSection(conn, req.body, () => {
-                console.log("Inserted new section.");
-                sql.reInitSections(conn, menu, () => {
+                sql.reInitSections(conn, menu, sanitizeHtml, () => {
                     io.postNotif('Inserted new section "' + req.body.name + '".', 1);
                     res.redirect('/admin/edit')
                 });
