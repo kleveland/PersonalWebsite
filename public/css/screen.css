@@ -48,6 +48,19 @@
             transform: scale(1.4);
         }
 
+        .navcol {
+            width: 8%;
+            min-width: 200px;
+            display: table-cell;
+            height: auto;
+        }
+
+        .navfill {
+            width: 8.6666%;
+            display: table-cell;
+            height: auto;
+        }
+
         .col2 {
             width: 16.6666%;
             display: table-cell;
@@ -76,5 +89,31 @@
             float: right;
             margin-right: 1em;
         }
+
+        .slide.list article {
+            background-color: skyblue;
+            min-width: 90vw;
+            width: 80%;
+            height: auto;
+            position: relative;
+            padding: 20px 20px 20px 20px;
+        }
+
+        .slide.list article > img {
+            padding: 20px 20px 20px 20px;
+            display: inline-block;
+            background-color: beige;
+            vertical-align: middle;
+        }
+
+        .slide.list article > .content {
+            width: 50%;
+            height: auto;
+            display: inline-block;
+            padding: 20px 20px 20px 20px;
+            background-color: aqua;
+            vertical-align: middle;
+        }
+
 
     }

@@ -20,7 +20,9 @@ $(document).ready(function () {
             $('.userdisp > a').css('background-color', invCol);
             $('.userdisp > a').css('color', $('#fullpage .section:nth-child(' + nextIndex + ') .mainpanel').css('backgroundColor'));
             $('.userdisp').css('color', invCol);
-        }
+        },
+        controlArrows: false,
+        parallax: true
     });
 
 });

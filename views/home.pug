@@ -11,18 +11,20 @@ block content
             p= user.passport.user.dispName
         else
             a(href='/auth/google') Login
-    div(class='navbar')
+    nav(class='navbar')
         ul
             each val,index in navLink
                 li
                     a(href='#'+val)= nav[index]
     div(id='fullpage')
         each val,index in navType
-            div(class='section')
+            section(class='section')
                 div(class='mainpanel ver' + index style={background: bg[index]})
                     div(class='centerDiv')
-                        div(class='col2 centerVert')
+                        div(class='navcol centerVert')
                         if(val==0)
                             +intro(dat[index].img, dat[index].maintext, dat[index].subtext)
                         if(val==1)
                             +descrip(dat[index].text1, dat[index].text2)
+                        if(val==2)
+                            +list(dat[index].dat)

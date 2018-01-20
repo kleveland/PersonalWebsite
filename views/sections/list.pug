@@ -1,2 +1,8 @@
-mixin list
-    p wootest
+mixin list(slides)
+    each val,index in slides
+        div(class="slide list")
+            article(style='background-color:' + val.bgcolor + ';')
+                img(class='himg' src=val.Image)
+                div(class="content")
+                    h2= val.Header
+                    p= val.Description

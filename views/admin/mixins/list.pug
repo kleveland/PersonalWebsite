@@ -1,2 +1,56 @@
-mixin list
-    p test
+mixin list(id,listid,color,slides)
+    form(action='/admin/updateblock' method='post')
+        input(type="hidden" name="id" value=id)
+        input(type="hidden" name="type" value=2)
+        input(type='text' name='bgcolormain' id='maincol'+id value=color)
+        script.
+            $('#maincol' + '#{id}').spectrum({
+                preferredFormat: "rgb",
+                color: "#{color}",
+                showInput: true,
+                showAlpha: true
+            });
+        div(class='horzscroll')
+            each val,index in slides
+                div(class='slidecont')
+                    div(class='closeslidebut' id='delslide'+val.SlideID) x
+                    script.
+                        $('#delslide' + '#{val.SlideID}').click(function() {
+                            let el = this;
+                            $.post('/admin/removeslide/'+'#{val.SlideID}', function() {
+                                console.log("removed slide");
+                                $(el).parent().remove();
+                            })
+                        })
+                    input(type='hidden' name='slideid' value=val.SlideID)
+                    div(class='listsection')
+                        div(class='txtinput')
+                            p Image Link (300x300):
+                            input(type='text' name='image' value=val.Image)
+                        div(class='txtinput')
+                            p Header:
+                            input(type='text' name='header' value=val.Header)
+                        div(class='txtinput')
+                            p Description:
+                            input(type='text' name='description' value=val.Description)
+                        div(class='txtinput')
+                            p BG Color:
+                            input(type='text' name='bgcolor' id='lcol'+val.SlideID value=val.bgcolor)
+                            script.
+                                $('#lcol' + '#{val.SlideID}').spectrum({
+                                    preferredFormat: "rgb",
+                                    color: "#{val.bgcolor}",
+                                    showInput: true,
+                                    showAlpha: true
+                                });
+        div(class='textbut')
+                div(class='coppas' id="addslide" + listid) Add Slide
+                script.
+                    $('#addslide' + '#{listid}').click(function() {
+                        console.log("Adding Slide");
+                        $.post('/admin/addslide/#{listid}', function(dat) {
+                            console.log("Added Slide.");
+                            location.reload();
+                        });
+                    })
+        input(class='submitbut' type='submit')

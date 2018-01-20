@@ -47,7 +47,9 @@ let io = socketIO(serv);
 ioNotif.set(io, connection);
 ioNotif.initConnection();
 
-sql.reInitSections(connection, menu, () => {});
+sql.reInitSections(connection, menu, () => {
+    console.log('STARTING DAT', menu);
+});
 
 //passport setup
 passport.serializeUser(function (user, done) {

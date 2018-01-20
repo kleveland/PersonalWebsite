@@ -115,4 +115,15 @@
             display: block;
         }
 
+        .slide.list article {
+            background-color: skyblue;
+            width: 100%;
+            height: auto;
+            text-align: center;
+        }
+
+        .slide.list article > img {
+            display: inline-block;
+        }
+
     }

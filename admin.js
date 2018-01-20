@@ -90,5 +90,43 @@ module.exports = function (app, menu, conn, sql, io, sanitizeHtml) {
 
     });
 
+    app.post('/admin/addslide/:id', function(req, res) {
+        handleAdmin(req, res, menu, () => {
+            console.log("Recieved post request.");
+            let defaults = {
+                bgcolor: 'rgb(0,0,0)',
+                Image: 'http://via.placeholder.com/300x300',
+                Header: 'Filler Header',
+                Description: 'Filler Description'
+            }
+            sql.insertSlide(conn,req.params.id,defaults, (id)=> {
+                console.log("Slide submitted successfully.")
+                sql.reInitSections(conn, menu, () => {
+                    let updateName = '';
+                    console.log("HERE IS MENU", menu)
+                    for (let i = 0; i < menu.name.length; i++) {
+                        if (menu.type[i] == 2 && menu.dat[i].id == req.params.id) {
+                            updateName = menu.name[i];
+                            break;
+                        }
+                    }
+                    io.postNotif('Added slide to section "' + updateName + '".', 1);
+                    res.redirect('back');
+                })
+            })
+        })
+    })
+
+    app.post('/admin/removeslide/:slideid', function(req, res) {
+        handleAdmin(req, res, menu, () => {
+            sql.removeSlide(conn, req.params.slideid, () => {
+                sql.reInitSections(conn, menu, () => {
+                    io.postNotif('Removed slide.', 1);
+                    res.redirect('back');
+                });
+            })
+        })
+    })
+
     //other routes..
 }

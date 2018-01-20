@@ -33,7 +33,7 @@ block innercontent
                         when 1
                             +descrip(id[index], bg[index], dat[index].text1, dat[index].text2)
                         when 2
-                            +list
+                            +list(id[index], dat[index].id, bg[index], dat[index].dat)
                 div(class="bottomedit")
         li(class="buttoncont")
             form(action="/admin/insertblock" method="post")

@@ -14,6 +14,14 @@ module.exports = {
                 secname = getType(menu.type[i]);
                 conn.query('SELECT * FROM ' + secname + ' WHERE SID="' + menu.id[i] + '"', function (err, res, fields) {
                     menu.dat[i] = Object.assign({}, res[0]);
+                    if (menu.type[i] == 2) {
+                        console.log(menu.dat[i])
+                        getSlides(conn, menu.dat[i].id, (slides) => {
+                            menu.dat[i].dat = slides;
+
+                            console.log('TESTDAT', menu.dat[i], menu.bg[i])
+                        })
+                    }
                     /*console.log(res[0]);
                     let keys = Object.keys(res[0]);
                     console.log(keys);
@@ -80,37 +88,55 @@ module.exports = {
         conn.query('DELETE FROM ' + secname + ' WHERE SID = ' + sid, function (err, res, fields) {
             if (err) throw err;
             conn.query('DELETE FROM sections WHERE SID = ' + sid, function (err, res, fields) {
-                if(err) throw err;
+                if (err) throw err;
                 cb();
             })
         })
     },
 
     updateSection: function (conn, body, sanitize, cb) {
-        let sec = getType(body.type);
-        let fieldstr = '';
-        let keys = Object.keys(body);
-        let attr = sanitize.defaults.allowedAttributes;
-        attr.font = ['size','face'];
-        attr.p = ['style'];
-        let opt = {
-           allowedTags: sanitize.defaults.allowedTags.concat([ 'font' ]),
-            allowedAttributes: attr
-        };
-        for (let i = 2; i < keys.length - 1; i++) {
-            fieldstr = fieldstr + keys[i] + '=' + "'" + body[keys[i]] + "'";
-            if (i != keys.length - 2) {
-                fieldstr = sanitize(fieldstr, opt) + ", ";
-            }
-        }
-
-        conn.query("UPDATE sections SET bgcolor='" + body.bgcolor + "' WHERE SID = " + body.id, function (err, res, fields) {
-            if (err) throw err;
-            conn.query('UPDATE ' + sec + ' SET ' + fieldstr + ' WHERE SID = ' + body.id, function (err, res, fields) {
+        if (body.type == '2') {
+            // console.log("----------------------------");
+            // console.log(body);
+            conn.query("UPDATE sections SET bgcolor='" + body.bgcolormain + "' WHERE SID = " + body.id, function (err, res, fields) {
                 if (err) throw err;
-                cb();
+                for (let i = 0; i < body.slideid.length; i++) {
+                    let vals = "Image = '" + body.image[i] + "', Header = '" + body.header[i] + "', Description = '" + body.description[i] + "', bgcolor = '" + body.bgcolor[i] + "'";
+                    conn.query("UPDATE sec_list_slides SET " + vals + " WHERE SlideID = " + body.slideid[i], function (err, res, fields) {
+                        if (err) throw err;
+                        console.log("Successfully updated!");
+                        if (i == body.slideid.length - 1) {
+                        cb();
+                    }
+                    })
+                }
             })
-        });
+        } else {
+            let sec = getType(body.type);
+            let fieldstr = '';
+            let keys = Object.keys(body);
+            let attr = sanitize.defaults.allowedAttributes;
+            attr.font = ['size', 'face'];
+            attr.p = ['style'];
+            let opt = {
+                allowedTags: sanitize.defaults.allowedTags.concat(['font']),
+                allowedAttributes: attr
+            };
+            for (let i = 2; i < keys.length - 1; i++) {
+                fieldstr = fieldstr + keys[i] + '=' + "'" + body[keys[i]] + "'";
+                if (i != keys.length - 2) {
+                    fieldstr = sanitize(fieldstr, opt) + ", ";
+                }
+            }
+
+            conn.query("UPDATE sections SET bgcolor='" + body.bgcolor + "' WHERE SID = " + body.id, function (err, res, fields) {
+                if (err) throw err;
+                conn.query('UPDATE ' + sec + ' SET ' + fieldstr + ' WHERE SID = ' + body.id, function (err, res, fields) {
+                    if (err) throw err;
+                    cb();
+                })
+            });
+        }
     },
 
     insertSection: function (conn, body, cb) {
@@ -122,6 +148,23 @@ module.exports = {
                 cb(res[0]);
             })
 
+        })
+    },
+
+    insertSlide: function (conn, listid, body, cb) {
+        let vals = "'" + body.bgcolor + "', '" + body.Description + "', '" + body.Header + "', '" + body.Image + "', " + listid;
+        console.log("VALS", vals);
+        conn.query('INSERT INTO sec_list_slides (bgcolor, Description, Header, Image, ListID) VALUES (' + vals + ')', function (err, res, fields) {
+            if (err) throw err;
+            console.log("INSERTED SLIDE");
+            cb();
+        })
+    },
+
+    removeSlide: function(conn, slideid, cb) {
+        conn.query('DELETE FROM sec_list_slides WHERE SlideID = ' + slideid, function(err, res, fields) {
+            if(err) throw err;
+            cb();
         })
     }
 }
@@ -141,4 +184,12 @@ function getType(type) {
             return 'sec_list'
             break;
     }
+}
+
+function getSlides(conn, listid, cb) {
+    conn.query('SELECT * FROM sec_list_slides WHERE ListID = ' + listid, function (err, res, fields) {
+        if (err) throw err;
+        console.log(res);
+        cb(res)
+    })
 }
