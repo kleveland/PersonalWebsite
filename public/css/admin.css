@@ -61,6 +61,7 @@ body {
 .topeditbut {
     float: right;
     margin-right: 8px;
+    cursor: pointer;
 }
 
 .topedit {
@@ -219,7 +220,7 @@ body {
 }
 
 .coppas {
-    margin: 0 0 8px 17px;
+    margin: 10px 0 8px 17px;
     cursor: pointer;
     overflow: hidden;
     outline: none;

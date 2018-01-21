@@ -23,7 +23,8 @@ block innercontent
                             let el = this;
                             console.log("close clicked:", "#{id[index]}")
                             $.post("/admin/deleteblock", { id: '#{id[index]}', type: '#{type[index]}', name: '#{name[index]}'} , function(data) {
-                                $(el).parent().parent().remove();
+                                //$(el).parent().parent().remove();
+                                location.reload();
                             })
                         })
                 div(class="contentedit")

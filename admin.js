@@ -26,7 +26,7 @@ module.exports = function (app, menu, conn, sql, io, sanitizeHtml) {
     app.post('/admin/deleteblock', function (req, res) {
         handleAdmin(req, res, menu, () => {
             sql.deleteSection(conn, req.body.type, req.body.id, () => {
-                sql.reInitSections(conn, menu, sanitizeHtml, () => {
+                sql.reInitSections(conn, menu, () => {
                     let idx;
                     for (let i = 0; i < menu.id.length; i++) {
                         if (menu.id[i] == req.body.id) {
@@ -36,7 +36,6 @@ module.exports = function (app, menu, conn, sql, io, sanitizeHtml) {
                     }
                     let keys = Object.keys(menu);
                     keys.splice(keys.length - 1, 1);
-                    console.log(keys);
                     for (let i = 0; i < keys.length; i++) {
                         menu[keys[i]].splice(idx, 1);
                     }
@@ -67,8 +66,18 @@ module.exports = function (app, menu, conn, sql, io, sanitizeHtml) {
 
     app.post('/admin/insertblock', function (req, res) {
         handleAdmin(req, res, menu, () => {
-            sql.insertSection(conn, req.body, () => {
-                sql.reInitSections(conn, menu, sanitizeHtml, () => {
+            sql.insertSection(conn, req.body, (id) => {
+                if (req.body.type == 2) {
+                    sql.insertSlide(conn, id, {
+                        bgcolor: 'rgb(0,0,0)',
+                        Image: 'http://via.placeholder.com/300x300',
+                        Header: 'Filler Header',
+                        Description: 'Filler Description'
+                    }, () => {
+
+                    });
+                }
+                sql.reInitSections(conn, menu, () => {
                     io.postNotif('Inserted new section "' + req.body.name + '".', 1);
                     res.redirect('/admin/edit')
                 });
@@ -90,20 +99,17 @@ module.exports = function (app, menu, conn, sql, io, sanitizeHtml) {
 
     });
 
-    app.post('/admin/addslide/:id', function(req, res) {
+    app.post('/admin/addslide/:id', function (req, res) {
         handleAdmin(req, res, menu, () => {
-            console.log("Recieved post request.");
             let defaults = {
                 bgcolor: 'rgb(0,0,0)',
                 Image: 'http://via.placeholder.com/300x300',
                 Header: 'Filler Header',
                 Description: 'Filler Description'
             }
-            sql.insertSlide(conn,req.params.id,defaults, (id)=> {
-                console.log("Slide submitted successfully.")
+            sql.insertSlide(conn, req.params.id, defaults, (id) => {
                 sql.reInitSections(conn, menu, () => {
                     let updateName = '';
-                    console.log("HERE IS MENU", menu)
                     for (let i = 0; i < menu.name.length; i++) {
                         if (menu.type[i] == 2 && menu.dat[i].id == req.params.id) {
                             updateName = menu.name[i];
@@ -117,7 +123,7 @@ module.exports = function (app, menu, conn, sql, io, sanitizeHtml) {
         })
     })
 
-    app.post('/admin/removeslide/:slideid', function(req, res) {
+    app.post('/admin/removeslide/:slideid', function (req, res) {
         handleAdmin(req, res, menu, () => {
             sql.removeSlide(conn, req.params.slideid, () => {
                 sql.reInitSections(conn, menu, () => {

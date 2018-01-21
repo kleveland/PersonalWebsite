@@ -19,6 +19,7 @@
     "passport-google-oauth": "^1.0.0",
     "pug": "^2.0.0-rc.4",
     "sanitize-html": "^1.17.0",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "sortablejs": "^1.7.0"
   }
 }

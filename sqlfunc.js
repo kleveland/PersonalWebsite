@@ -1,6 +1,13 @@
 module.exports = {
     reInitSections: function (conn, menu, cb) {
         conn.query('SELECT * FROM sections', function (err, res, fields) {
+            if (err) throw err;
+            menu.name = [];
+            menu.short = [];
+            menu.type = [];
+            menu.id = [];
+            menu.bg = [];
+            menu.dat = [];
             for (let i = 0; i < res.length; i++) {
                 menu.name[i] = res[i].Name;
                 menu.short[i] = res[i].shorthand;
@@ -12,24 +19,21 @@ module.exports = {
             let secname = '';
             for (let i = 0; i < menu.name.length; i++) {
                 secname = getType(menu.type[i]);
+                let done = !(menu.type[i] == 2);
                 conn.query('SELECT * FROM ' + secname + ' WHERE SID="' + menu.id[i] + '"', function (err, res, fields) {
+                    if (err) throw err;
                     menu.dat[i] = Object.assign({}, res[0]);
                     if (menu.type[i] == 2) {
-                        console.log(menu.dat[i])
                         getSlides(conn, menu.dat[i].id, (slides) => {
                             menu.dat[i].dat = slides;
-
-                            console.log('TESTDAT', menu.dat[i], menu.bg[i])
+                            done = true;
+                            if (i == menu.name.length - 1 && done) {
+                                cb();
+                            }
                         })
                     }
-                    /*console.log(res[0]);
-                    let keys = Object.keys(res[0]);
-                    console.log(keys);
-                    for(let i=2; i<keys.length; i++) {
-                        res[0][keys[i]] = parser(res[0][keys[i]]);
-                    }
-                    menu.datparsed[i] = res[0];*/
-                    if (i == menu.name.length - 1) {
+
+                    if (i == menu.name.length - 1 && done) {
                         cb();
                     }
                 })
@@ -84,7 +88,6 @@ module.exports = {
 
     deleteSection: function (conn, type, sid, cb) {
         let secname = getType(type);
-
         conn.query('DELETE FROM ' + secname + ' WHERE SID = ' + sid, function (err, res, fields) {
             if (err) throw err;
             conn.query('DELETE FROM sections WHERE SID = ' + sid, function (err, res, fields) {
@@ -96,18 +99,15 @@ module.exports = {
 
     updateSection: function (conn, body, sanitize, cb) {
         if (body.type == '2') {
-            // console.log("----------------------------");
-            // console.log(body);
             conn.query("UPDATE sections SET bgcolor='" + body.bgcolormain + "' WHERE SID = " + body.id, function (err, res, fields) {
                 if (err) throw err;
                 for (let i = 0; i < body.slideid.length; i++) {
                     let vals = "Image = '" + body.image[i] + "', Header = '" + body.header[i] + "', Description = '" + body.description[i] + "', bgcolor = '" + body.bgcolor[i] + "'";
                     conn.query("UPDATE sec_list_slides SET " + vals + " WHERE SlideID = " + body.slideid[i], function (err, res, fields) {
                         if (err) throw err;
-                        console.log("Successfully updated!");
                         if (i == body.slideid.length - 1) {
-                        cb();
-                    }
+                            cb();
+                        }
                     })
                 }
             })
@@ -145,7 +145,7 @@ module.exports = {
             if (err) throw err;
             let type = getType(body.type);
             conn.query('INSERT INTO ' + type + ' (SID) VALUES (' + res.insertId + ')', function (err, res, fields) {
-                cb(res[0]);
+                cb(res.insertId);
             })
 
         })
@@ -153,17 +153,15 @@ module.exports = {
 
     insertSlide: function (conn, listid, body, cb) {
         let vals = "'" + body.bgcolor + "', '" + body.Description + "', '" + body.Header + "', '" + body.Image + "', " + listid;
-        console.log("VALS", vals);
         conn.query('INSERT INTO sec_list_slides (bgcolor, Description, Header, Image, ListID) VALUES (' + vals + ')', function (err, res, fields) {
             if (err) throw err;
-            console.log("INSERTED SLIDE");
             cb();
         })
     },
 
-    removeSlide: function(conn, slideid, cb) {
-        conn.query('DELETE FROM sec_list_slides WHERE SlideID = ' + slideid, function(err, res, fields) {
-            if(err) throw err;
+    removeSlide: function (conn, slideid, cb) {
+        conn.query('DELETE FROM sec_list_slides WHERE SlideID = ' + slideid, function (err, res, fields) {
+            if (err) throw err;
             cb();
         })
     }
@@ -189,7 +187,6 @@ function getType(type) {
 function getSlides(conn, listid, cb) {
     conn.query('SELECT * FROM sec_list_slides WHERE ListID = ' + listid, function (err, res, fields) {
         if (err) throw err;
-        console.log(res);
         cb(res)
     })
 }

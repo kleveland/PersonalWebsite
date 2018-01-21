@@ -2,7 +2,9 @@ mixin list(id,listid,color,slides)
     form(action='/admin/updateblock' method='post')
         input(type="hidden" name="id" value=id)
         input(type="hidden" name="type" value=2)
-        input(type='text' name='bgcolormain' id='maincol'+id value=color)
+        div(class='txtinput')
+            p Main Background Color:
+            input(type='text' name='bgcolormain' id='maincol'+id value=color)
         script.
             $('#maincol' + '#{id}').spectrum({
                 preferredFormat: "rgb",
@@ -10,7 +12,7 @@ mixin list(id,listid,color,slides)
                 showInput: true,
                 showAlpha: true
             });
-        div(class='horzscroll')
+        div(class='horzscroll' id='listscroll' + id)
             each val,index in slides
                 div(class='slidecont')
                     div(class='closeslidebut' id='delslide'+val.SlideID) x
@@ -51,6 +53,7 @@ mixin list(id,listid,color,slides)
                         $.post('/admin/addslide/#{listid}', function(dat) {
                             console.log("Added Slide.");
                             location.reload();
+                            //$("#listscroll" + "#{id}").load(document.URL + ' #listscroll' + '#{id}');
                         });
                     })
-        input(class='submitbut' type='submit')
+        input(class='submitbut' type='submit' value='Update')

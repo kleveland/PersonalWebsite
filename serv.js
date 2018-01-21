@@ -28,13 +28,6 @@ let menu = {
     bg: []
 };
 
-/*parser.addTag('center', {
-    open: function(token, options) {
-        return '<span style="display: block; text-align: center;">';
-    },
-    close: '</spaan>'
-});*/
-
 connection.query('SELECT * FROM sections', function(err, res, fields) {
     if(err){
         throw new Error("Problem with connection to DB.");
@@ -48,7 +41,6 @@ ioNotif.set(io, connection);
 ioNotif.initConnection();
 
 sql.reInitSections(connection, menu, () => {
-    console.log('STARTING DAT', menu);
 });
 
 //passport setup
