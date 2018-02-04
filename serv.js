@@ -12,14 +12,18 @@ const express = require('express'),
     socketIO = require('socket.io'),
     ioNotif = require('./notif.js');
 
-let googleconf = require('./config.json');
-if(!googleconf.auth) {
+let googleconf;
+
+try {
+    googleconf = require('./config.json');
+} catch(e) {
     googleconf = {
         auth: {
             google: {}
         }
     };
-};
+}
+
 let config = {
     database: {
         host: "localhost",
