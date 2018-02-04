@@ -1,7 +1,6 @@
 const express = require('express'),
     path = require('path'),
     app = express(),
-    config = require('./config.json'),
     passport = require('passport'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     session = require('express-session'),
@@ -9,15 +8,47 @@ const express = require('express'),
     //parser = require('bboxed'),
     sanitizeHtml = require('sanitize-html'),
     mysql = require('mysql'),
-    connection = mysql.createConnection({
-        host: config.database.host,
-        user: config.database.user,
-        password: config.database.password,
-        database: config.database.database
-    }),
     sql = require('./sqlfunc.js'),
     socketIO = require('socket.io'),
     ioNotif = require('./notif.js');
+
+let googleconf = require('./config.json');
+
+let config = {
+    database: {
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "personaldb"
+    }
+};
+
+console.log(config);
+
+config.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+config.ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+
+if (process.env.OPENSHIFT_MYSQL_PASSWORD) {
+    config.database.host = process.env.OPENSHIFT_MYSQL_HOST;
+    config.database.user = process.env.OPENSHIFT_MYSQL_USER;
+    config.database.password = process.env.OPENSHIFT_MYSQL_PASSWORD;
+    config.database.database = process.env.OPENSHIFT_MYSQL_DATABASE;
+}
+
+if(process.env.OPENSHIFT_GOOG_ID) {
+    googleconf.auth.google.client_id = process.env.OPENSHIFT_GOOG_ID;
+    googleconf.auth.google.secret = process.env.OPENSHIFT_GOOG_SECRET;
+    googleconf.auth.google.callback = process.env.OPENSHIFT_GOOG_CALLBACK;
+}
+
+const connection = mysql.createConnection({
+    host: config.database.host,
+    user: config.database.user,
+    password: config.database.password,
+    database: config.database.database
+});
+
+
 let menu = {
     name: [],
     short: [],
@@ -29,20 +60,19 @@ let menu = {
     p_bg: []
 };
 
-connection.query('SELECT * FROM sections', function(err, res, fields) {
-    if(err){
+connection.query('SELECT * FROM sections', function (err, res, fields) {
+    if (err) {
         throw new Error("Problem with connection to DB.");
     }
 })
 
-let serv = app.listen(3000, () => console.log('Example app listening on port 3000!'))
+let serv = app.listen(config.port, config.ip, () => console.log('Example app listening ' + config.ip + ':' + config.port + '!'))
 
 let io = socketIO(serv);
 ioNotif.set(io, connection);
 ioNotif.initConnection();
 
-sql.reInitSections(connection, menu, () => {
-});
+sql.reInitSections(connection, menu, () => {});
 
 //passport setup
 passport.serializeUser(function (user, done) {
@@ -54,9 +84,9 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new GoogleStrategy({
-        clientID: config.auth.google.client_id,
-        clientSecret: config.auth.google.secret,
-        callbackURL: config.auth.google.callback
+        clientID: googleconf.auth.google.client_id,
+        clientSecret: googleconf.auth.google.secret,
+        callbackURL: googleconf.auth.google.callback
     },
     function (accessToken, refreshToken, profile, done) {
         sql.findCreateUser(connection, profile, function (user) {
