@@ -51,6 +51,8 @@ if(process.env.OPENSHIFT_GOOG_ID) {
     googleconf.auth.google.callback = process.env.OPENSHIFT_GOOG_CALLBACK;
 }
 
+console.log(config);
+
 const connection = mysql.createConnection({
     host: config.database.host,
     user: config.database.user,
