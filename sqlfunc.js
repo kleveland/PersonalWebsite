@@ -1,6 +1,8 @@
+
+
 module.exports = {
     reInitSections: function (conn, menu, cb) {
-        conn.query('SELECT * FROM sections', function (err, res, fields) {
+        conn.query('SELECT * FROM sections ORDER BY sec_order', function (err, res, fields) {
             if (err) throw err;
             menu.name = [];
             menu.short = [];
@@ -8,13 +10,18 @@ module.exports = {
             menu.id = [];
             menu.bg = [];
             menu.dat = [];
+            menu.p_bg = [];
             for (let i = 0; i < res.length; i++) {
                 menu.name[i] = res[i].Name;
                 menu.short[i] = res[i].shorthand;
                 menu.type[i] = res[i].Type;
                 menu.id[i] = res[i].SID;
                 menu.bg[i] = res[i].bgcolor;
+                menu.p_bg[i] = res[i].p_bg;
             }
+
+            console.log("HERE IS MENU P_BG")
+            console.log(menu.p_bg)
 
             let secname = '';
             for (let i = 0; i < menu.name.length; i++) {
@@ -97,9 +104,29 @@ module.exports = {
         })
     },
 
+    updateOrder: function(conn, order, cb) {
+        for(let i=0; i<order.length; i++) {
+            conn.query("UPDATE sections SET sec_order=" + i + " WHERE SID=" + order[i], function(err, res, fields) {
+                if(err) throw err;
+                console.log("Success in updating order", i, order[i]);
+                if(i == order.length-1) cb();
+            });
+        }
+    },
+
+    updateOrderSlides: function(conn, order, cb) {
+        for(let i=0; i<order.dat.length; i++) {
+            conn.query("UPDATE sec_list_slides SET slide_order=" + i + " WHERE SlideID=" + order.dat[i], function(err, res, fields) {
+                if(err) throw err;
+                console.log("Success in updating order", order.dat[i]);
+                if(i == order.dat.length-1) cb();
+            });
+        }
+    },
+
     updateSection: function (conn, body, sanitize, cb) {
         if (body.type == '2') {
-            conn.query("UPDATE sections SET bgcolor='" + body.bgcolormain + "' WHERE SID = " + body.id, function (err, res, fields) {
+            conn.query("UPDATE sections SET bgcolor='" + body.bgcolormain + "', p_bg='" +  body.p_bg + "' WHERE SID = " + body.id, function (err, res, fields) {
                 if (err) throw err;
                 for (let i = 0; i < body.slideid.length; i++) {
                     let vals = "Image = '" + body.image[i] + "', Header = '" + body.header[i] + "', Description = '" + body.description[i] + "', bgcolor = '" + body.bgcolor[i] + "'";
@@ -122,14 +149,13 @@ module.exports = {
                 allowedTags: sanitize.defaults.allowedTags.concat(['font']),
                 allowedAttributes: attr
             };
-            for (let i = 2; i < keys.length - 1; i++) {
+            for (let i = 2; i < keys.length - 2; i++) {
                 fieldstr = fieldstr + keys[i] + '=' + "'" + body[keys[i]] + "'";
-                if (i != keys.length - 2) {
+                if (i != keys.length - 3) {
                     fieldstr = sanitize(fieldstr, opt) + ", ";
                 }
             }
-
-            conn.query("UPDATE sections SET bgcolor='" + body.bgcolor + "' WHERE SID = " + body.id, function (err, res, fields) {
+            conn.query("UPDATE sections SET bgcolor='" + body.bgcolor + "', p_bg='" +  body.p_bg + "' WHERE SID = " + body.id, function (err, res, fields) {
                 if (err) throw err;
                 conn.query('UPDATE ' + sec + ' SET ' + fieldstr + ' WHERE SID = ' + body.id, function (err, res, fields) {
                     if (err) throw err;
@@ -185,7 +211,7 @@ function getType(type) {
 }
 
 function getSlides(conn, listid, cb) {
-    conn.query('SELECT * FROM sec_list_slides WHERE ListID = ' + listid, function (err, res, fields) {
+    conn.query('SELECT * FROM sec_list_slides WHERE ListID = ' + listid + ' ORDER BY slide_order', function (err, res, fields) {
         if (err) throw err;
         cb(res)
     })

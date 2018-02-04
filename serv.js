@@ -25,7 +25,8 @@ let menu = {
     dat: [],
     datparsed: [],
     id: [],
-    bg: []
+    bg: [],
+    p_bg: []
 };
 
 connection.query('SELECT * FROM sections', function(err, res, fields) {
@@ -99,6 +100,7 @@ app.get('/', (req, res) => {
         navLink: menu.short,
         dat: menu.dat,
         bg: menu.bg,
+        p_bg: menu.p_bg,
         user: req.session,
     });
 })

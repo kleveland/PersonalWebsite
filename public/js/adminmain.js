@@ -1,6 +1,8 @@
 $(document).ready(function () {
+    let el,
+    sortable,
+    socket = io();
 
-    var socket = io();
     socket.on('notif post', (dat) => {
         // show the notification
         $('.notcont').append('<li class="notification"><div class="notifcontent" id="' + dat.nid + '"><p>' + dat.text + '</p></div><div class="closenotif" id="' + dat.nid + '"></div></li>')

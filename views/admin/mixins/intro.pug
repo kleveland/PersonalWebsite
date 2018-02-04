@@ -1,4 +1,4 @@
-mixin intro(id, color, imglink, maintext, subtext)
+mixin intro(id, color, imglink, maintext, subtext, bg)
     form(action='/admin/updateblock' method='post')
         input(type="hidden" name="id" value=id)
         input(type="hidden" name="type" value=0)
@@ -11,6 +11,9 @@ mixin intro(id, color, imglink, maintext, subtext)
         div(class='txtinput')
             p Sub Text:
             input(type='text' name='subtext' value=subtext)
+        div(class='txtinput')
+            p Parallax BG URL:
+            input(type='text' id='p_bg' name='p_bg' value=bg)
         div(class='txtinput')
             p BG Color:
             input(type='text' name='bgcolor' id='col'+id value=color)

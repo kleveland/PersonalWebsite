@@ -46,6 +46,30 @@ module.exports = function (app, menu, conn, sql, io, sanitizeHtml) {
         })
     })
 
+    app.post('/admin/updateorder', function(req, res) {
+        handleAdmin(req, res, menu, () => {
+            console.log(req.body);
+            sql.updateOrder(conn, req.body, () => {
+                console.log("order updated.");
+                sql.reInitSections(conn, menu, () => {
+                    console.log("order updated2.");
+                })
+            })
+        })
+    })
+
+    app.post('/admin/slides/updateorder', function(req, res) {
+        handleAdmin(req, res, menu, () => {
+            console.log(req.body);
+            sql.updateOrderSlides(conn, req.body, () => {
+                console.log("order updated.");
+                sql.reInitSections(conn, menu, () => {
+                    console.log("order updated2.");
+                })
+            })
+        })
+    })
+
     app.post('/admin/updateblock', function (req, res) {
         handleAdmin(req, res, menu, () => {
             sql.updateSection(conn, req.body, sanitizeHtml, () => {

@@ -18,7 +18,7 @@ block content
                     a(href='#'+val)= nav[index]
     div(id='fullpage')
         each val,index in navType
-            section(class='section')
+            section(class='section jarallax' style="background-image: url('" + p_bg[index] + "');" id=navLink[index]+'css')
                 div(class='mainpanel ver' + index style={background: bg[index]})
                     div(class='centerDiv')
                         div(class='navcol centerVert')

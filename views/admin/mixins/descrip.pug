@@ -1,4 +1,4 @@
-mixin descrip(id, color, text1, text2)
+mixin descrip(id, color, text1, text2, bg)
     form(action='/admin/updateblock' method='post')
         input(type="hidden" name="id" value=id)
         input(type="hidden" name="type" value=1)
@@ -9,6 +9,9 @@ mixin descrip(id, color, text1, text2)
             div(class='txtinput')
                 p Text 2:
                 input(type='text' id='inp2'+id name='text2' value=text2)
+            div(class='txtinput')
+                p Parallax BG URL:
+                input(type='text' id='inp3'+id name='p_bg' value=bg)
             div(class='txtinput')
                 p BG Color:
                 input(type='text' name='bgcolor' id='col'+id value=color)

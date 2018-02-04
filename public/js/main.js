@@ -22,10 +22,16 @@ $(document).ready(function () {
             $('.userdisp').css('color', invCol);
         },
         controlArrows: false,
-        parallax: true
+        scrollBar: true
     });
 
+    $('.jarallax').jarallax({
+    speed: 0.2
 });
+
+});
+
+
 
 function invertColor(rgb) {
     rgb = Array.prototype.join.call(arguments).match(/(-?[0-9\.]+)/g);
@@ -41,10 +47,10 @@ function typeOut(el, txt, cb) {
             setTimeout(() => {
                 console.log($(el).text());
                 $(el).append(txt[i]);
-            }, 300*i)
+            }, 300 * i)
         })(i);
     }
     setTimeout(() => {
         cb();
-    }, 300*txt.length);
+    }, 300 * txt.length);
 }

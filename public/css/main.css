@@ -1,6 +1,22 @@
-    body {
+.jarallax {
+    position: relative;
+    z-index: 0;
+}
+.jarallax > .jarallax-img {
+    position: absolute;
+    object-fit: cover;
+    /* support for plugin https://github.com/bfred-it/object-fit-images */
+    font-family: 'object-fit: cover;';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+body {
         margin: 0;
-        background-image: url(/static/images/bg.jpeg);
+        /*background-image: url(/static/images/bg.jpeg);*/
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
@@ -78,28 +94,6 @@
 
     .centerVert {
         vertical-align: middle;
-    }
-
-    .mainpanel.ver0 {
-        background-color: #4a5f75;
-        /*text-align: center;*/
-    }
-
-    .mainpanel.ver1 {
-        background-color: #4a5f75;
-        opacity: 0.7;
-    }
-
-    .mainpanel.ver2 {
-        background-color: #eeeeee;
-    }
-
-    .mainpanel.ver3 {
-        background-color: #dcd7d4;
-    }
-
-    .mainpanel.ver4 {
-        background-color: #e5ccaf;
     }
 
     .centerDiv {

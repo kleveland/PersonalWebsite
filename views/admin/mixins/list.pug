@@ -1,10 +1,13 @@
-mixin list(id,listid,color,slides)
+mixin list(id,listid,color,slides, bg)
     form(action='/admin/updateblock' method='post')
         input(type="hidden" name="id" value=id)
         input(type="hidden" name="type" value=2)
         div(class='txtinput')
             p Main Background Color:
             input(type='text' name='bgcolormain' id='maincol'+id value=color)
+        div(class='txtinput')
+            p Parallax BG URL:
+            input(type='text' id='p_bg' name='p_bg' value=bg)
         script.
             $('#maincol' + '#{id}').spectrum({
                 preferredFormat: "rgb",
@@ -12,9 +15,9 @@ mixin list(id,listid,color,slides)
                 showInput: true,
                 showAlpha: true
             });
-        div(class='horzscroll' id='listscroll' + id)
+        ul(class='horzscroll' id='listscroll' + listid)
             each val,index in slides
-                div(class='slidecont')
+                li(class='slidecont' data-id=val.SlideID)
                     div(class='closeslidebut' id='delslide'+val.SlideID) x
                     script.
                         $('#delslide' + '#{val.SlideID}').click(function() {
@@ -38,6 +41,9 @@ mixin list(id,listid,color,slides)
                         div(class='txtinput')
                             p BG Color:
                             input(type='text' name='bgcolor' id='lcol'+val.SlideID value=val.bgcolor)
+                        div(class='txtinput')
+                            p Parallax BG URL:
+                            input(type='text' name='slidepar' id='lpar'+val.SlideID value=val.p_bg)
                             script.
                                 $('#lcol' + '#{val.SlideID}').spectrum({
                                     preferredFormat: "rgb",
@@ -45,6 +51,33 @@ mixin list(id,listid,color,slides)
                                     showInput: true,
                                     showAlpha: true
                                 });
+        script.
+            el = document.getElementById("listscroll#{listid}");
+            sortable = Sortable.create(el, {
+                onEnd: function(evt) {
+                    let ord = [];
+                    $('#listscroll#{listid} .slidecont').each(function(i) {
+                        console.log($(this).attr('data-id'));
+                       ord.push($(this).attr('data-id'));
+                    });
+                    let dat = { id: "#{listid}", dat: ord };
+                    console.log(dat);
+                    $.ajax({
+                        type: 'POST',
+                        data: JSON.stringify(dat),
+                        contentType: "application/json",
+                        dataType:'json',
+                        url: '/admin/slides/updateorder',
+                        success: function(data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+                        },
+                        error: function(error) {
+                            console.log("some error in fetching the notifications");
+                         }
+                    });
+                }
+            });
         div(class='textbut')
                 div(class='coppas' id="addslide" + listid) Add Slide
                 script.
