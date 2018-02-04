@@ -13,7 +13,13 @@ const express = require('express'),
     ioNotif = require('./notif.js');
 
 let googleconf = require('./config.json');
-
+if(!googleconf.auth) {
+    googleconf = {
+        auth: {
+            google: {}
+        }
+    };
+};
 let config = {
     database: {
         host: "localhost",
